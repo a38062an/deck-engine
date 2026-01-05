@@ -13,17 +13,17 @@ public:
 private:
     // Game resources
     Deck deck_;
-    std::mt19937 rng_;
+    std::mt19937 randomiser;
 
     // Game State
     Card currentCard_;
     Card nextCard_;
-    int scores_[2];
-    int activePlayerIndex_;
+    int scores_[2]{0, 0};
+    int activePlayerIndex_{0};
 
-    // Internal logic
+    // Helpers
     void swapTurn();
-    bool compareCards(bool guessHigher);
+    bool nextCardIsHigher();
 };
 
 #endif

@@ -7,10 +7,8 @@ Deck::Deck()
     initialiseDeck();
 }
 
-void Deck::shuffleDeck()
+void Deck::shuffleDeck(std::mt19937 &randomiser)
 {
-    std::random_device seed;
-    std::mt19937 randomiser(seed());
     std::shuffle(deck_.begin(), deck_.end(), randomiser);
 }
 
@@ -23,14 +21,14 @@ void Deck::initialiseDeck()
         for (int value{static_cast<int>(Value::Two)}; value <= static_cast<int>(Value::Ace); value++)
         {
             deck_[cursor++] = Card{
-                static_cast<Suit>(suit),
-                static_cast<Value>(value)};
+                static_cast<Value>(value),
+                static_cast<Suit>(suit)};
         }
 
         // Add Joker for every suit (different joker suits have different abilities)
         deck_[cursor++] = Card{
-            static_cast<Suit>(suit),
-            Value::Joker};
+            Value::Joker,
+            static_cast<Suit>(suit)};
     }
 }
 

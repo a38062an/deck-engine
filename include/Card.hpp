@@ -2,16 +2,17 @@
 #define CARD_HPP
 
 #include <string>
+#include <cstdint>
 
-enum Suit
+enum class Suit : uint8_t
 {
-    Heart,
-    Diamond,
-    Spade,
-    Clover,
+    Clover,  // C (Alphabetical 1st)
+    Diamond, // D (Alphabetical 2nd)
+    Heart,   // H (Alphabetical 3rd)
+    Spade    // S (Alphabetical 4th)
 };
 
-enum Value
+enum class Value : uint8_t
 {
     Two = 2,
     Three,
@@ -27,21 +28,27 @@ enum Value
     King,
     Ace,
     Joker
-
 };
 
 struct Card
 {
-    Suit suit_;
+    // Order matters here: Value is compared before Suit
     Value value_;
+    Suit suit_;
 
     std::string toString() const;
 
-    // Overload comparison operator
-    bool operator>(const Card &other) const
+    bool operator<(const Card &other) const
     {
-        return static_cast<int>(value_) > static_cast<int>(other.value_);
+        if (value_ != other.value_)
+            return value_ < other.value_;
+        return suit_ < other.suit_;
     }
+
+    bool operator>(const Card &other) const { return other < *this; }
+    bool operator<=(const Card &other) const { return !(other < *this); }
+    bool operator>=(const Card &other) const { return !(*this < other); }
+    bool operator==(const Card &other) const { return !(*this < other) && !(other < *this); }
 };
 
 #endif
