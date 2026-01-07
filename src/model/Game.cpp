@@ -89,51 +89,51 @@ void Game::playTurn(bool guessHigher)
     // Draw the next card
     Card drawnCard = drawNextCard();
 
-        Card jokerCard;
-        bool hasJoker = false;
+    Card jokerCard;
+    bool hasJoker = false;
 
-        while (isJoker(drawnCard))
+    while (isJoker(drawnCard))
+    {
+        if (!hasJoker)
         {
-            if (!hasJoker)
-            {
-                // First joker - save it for effects
-                hasJoker = true;
-                jokerCard = drawnCard;
-                std::cout << "Drew a " << drawnCard.toString() << "!\n";
-            }
-            else
-            {
-                // Multiple jokers; Only first one counts, but announce it
-                std::cout << "Drew ANOTHER " << drawnCard.toString() << "! Effects don't stack.\n";
-            }
-
-            // Draw next card (might be another joker or actual card)
-            drawnCard = drawNextCard();
-            std::cout << "Drawing next card for comparison...\n";
-        }
-
-        nextCard_ = drawnCard;
-
-        bool actualHigher = nextCardIsHigher();
-
-        int pointsToAdd;
-        if (hasJoker)
-        {
-            pointsToAdd = applyJokerEffect(jokerCard, guessHigher, actualHigher);
+            // First joker - save it for effects
+            hasJoker = true;
+            jokerCard = drawnCard;
+            std::cout << "Drew a " << drawnCard.toString() << "!\n";
         }
         else
         {
-            // Standard comparison
-            bool correctGuess = (guessHigher && actualHigher) || (!guessHigher && !actualHigher);
-            pointsToAdd = correctGuess ? 1 : 0;
+            // Multiple jokers; Only first one counts, but announce it
+            std::cout << "Drew ANOTHER " << drawnCard.toString() << "! Effects don't stack.\n";
         }
 
-        // Award points
-        scores_[activePlayerIndex_] += pointsToAdd;
+        // Draw next card (might be another joker or actual card)
+        drawnCard = drawNextCard();
+        std::cout << "Drawing next card for comparison...\n";
+    }
 
-        // Track result
-        lastGuessCorrect_ = (pointsToAdd > 0);
-        lastPointsAwarded_ = pointsToAdd;
+    nextCard_ = drawnCard;
+
+    bool actualHigher = nextCardIsHigher();
+
+    int pointsToAdd;
+    if (hasJoker)
+    {
+        pointsToAdd = applyJokerEffect(jokerCard, guessHigher, actualHigher);
+    }
+    else
+    {
+        // Standard comparison
+        bool correctGuess = (guessHigher && actualHigher) || (!guessHigher && !actualHigher);
+        pointsToAdd = correctGuess ? 1 : 0;
+    }
+
+    // Award points
+    scores_[activePlayerIndex_] += pointsToAdd;
+
+    // Track result
+    lastGuessCorrect_ = (pointsToAdd > 0);
+    lastPointsAwarded_ = pointsToAdd;
 
     currentCard_ = nextCard_;
 
