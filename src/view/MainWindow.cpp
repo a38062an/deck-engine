@@ -35,6 +35,8 @@ void MainWindow::setupUI()
     cardFont.setPointSize(72);
     currentCardLabel_->setFont(cardFont);
     currentCardLabel_->setAlignment(Qt::AlignCenter);
+    currentCardLabel_->setWordWrap(true);
+    currentCardLabel_->setMinimumHeight(180);
     currentCardLabel_->setStyleSheet("QLabel { background-color: white; padding: 40px; border-radius: 15px; border: 3px solid #333; }");
     mainLayout->addWidget(currentCardLabel_);
 
@@ -254,11 +256,11 @@ QString MainWindow::formatCardForDisplay(const std::string &cardStr) const
         return "🃏 Joker";
     }
 
-    // Replace suit names with emoji symbols
-    qCardStr.replace("Clovers", "♣️");
-    qCardStr.replace("Diamonds", "♦️");
-    qCardStr.replace("Hearts", "♥️");
-    qCardStr.replace("Spades", "♠️");
+    // Replace suit names with emoji symbols and shorten "of" to make it more compact
+    qCardStr.replace(" of Clovers", " ♣️");
+    qCardStr.replace(" of Diamonds", " ♦️");
+    qCardStr.replace(" of Hearts", " ♥️");
+    qCardStr.replace(" of Spades", " ♠️");
 
     return qCardStr;
 }
